@@ -32,10 +32,12 @@ export default function Page() {
         if (event.key === "ArrowRight") {
           event.preventDefault();
           setSelectedNavIndex((current) => (current + 1) % navItems.length);
+          return;
         }
         if (event.key === "ArrowLeft") {
           event.preventDefault();
           setSelectedNavIndex((current) => (current - 1 + navItems.length) % navItems.length);
+          return;
         }
         if (event.key === "ArrowDown") {
           event.preventDefault();
@@ -44,6 +46,12 @@ export default function Page() {
           } else {
             setActiveSection("questDetail");
           }
+          return;
+        }
+        if (event.key === "Enter") {
+          event.preventDefault;
+          setActiveSection("questList");
+          return;
         }
         return;
       }
@@ -72,6 +80,11 @@ export default function Page() {
         if (event.key === "Enter") {
           event.preventDefault();
           setActiveSection("questDetail");
+          return;
+        }
+        if (event.key === "Escape") {
+          event.preventDefault();
+          setActiveSection("navbar");
           return;
         }
         return;
@@ -112,7 +125,7 @@ export default function Page() {
       <div className="grid min-h-screen grid-rows-[64px_1fr]">
         <header 
           className={`border-b p-4 transition-colors duration-150 ${
-            activeSection === "navbar" ? "bg-gray-800 text-white" : "bg-transparent text-black"
+            activeSection === "navbar" ? "bg-gray-800 text-white" : "bg-transparent text-white"
           }`}
         >
           <div className="flex gap-4">
@@ -125,8 +138,8 @@ export default function Page() {
                 }}  
                 className={
                   index === selectedNavIndex
-                    ? "rounded bg-gray-100 px-3 py-1 font-bold"
-                    : "rounded px-3 py-1 hover:bg-gray-50"
+                    ? "rounded bg-gray-100 px-3 py-1 font-bold text-black"
+                    : "rounded px-3 py-1 hover:bg-gray-500"
                 }
               >
                 {item}
@@ -140,7 +153,7 @@ export default function Page() {
             <>
               <aside 
                 className={`border-b p-4 transition-colors duration-150 ${
-                  activeSection === "navbar" ? "bg-gray-800 text-white" : "bg-transparent text-black"
+                  activeSection === "questList" ? "bg-gray-800 text-white" : "bg-transparent text-white"
               }`}
               >
                 <h2 className="text-lg font-semibold">Quests</h2>
@@ -153,8 +166,8 @@ export default function Page() {
                       onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
                       className={
                         index === selectedIndex
-                          ? "text-left font-bold bg-gray-100 p-2 rounded"
-                          : "text-left p-2 rounded hover:bg-gray-50"
+                          ? "text-left font-bold bg-gray-100 p-2 rounded text-black"
+                          : "text-left p-2 rounded hover:bg-gray-500"
                       }
                       >
                         {quest.name ?? quest.description}
@@ -164,7 +177,7 @@ export default function Page() {
               </aside>
               <section 
                 className={`border-b p-4 transition-colors duration-150 ${
-                  activeSection === "navbar" ? "bg-gray-800 text-white" : "bg-transparent text-black"
+                  activeSection === "questDetail" ? "bg-gray-800 text-white" : "bg-transparent text-white"
                 }`}
               >
                 <h2 className="text-lg font-semibold">Details</h2>
