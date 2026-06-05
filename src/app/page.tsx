@@ -120,85 +120,89 @@ export default function Page() {
       ref={containerRef}
       tabIndex ={0}
       onKeyDown={handleKeyDown}
-      className="min-h-screen outline-none"
+      className="min-h-screen bg-[#07090d] px-6 py-8 outline-none sm:px-8 lg:px12"
     >
-      <div className="grid min-h-screen grid-rows-[64px_1fr]">
-        <header 
-          className={`border-b p-4 transition-colors duration-150 ${
-            activeSection === "navbar" ? "bg-gray-800 text-white" : "bg-transparent text-white"
-          }`}
-        >
-          <div className="flex gap-4">
-            {navItems.map((item, index) => (
-              <button
-                key={item}
-                onClick={() => {
-                  setSelectedNavIndex(index);
-                  setActiveSection("navbar");
-                }}  
-                className={
-                  index === selectedNavIndex
-                    ? "rounded bg-gray-100 px-3 py-1 font-bold text-black"
-                    : "rounded px-3 py-1 hover:bg-gray-500"
-                }
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        </header>
+      <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-screen-2xl items-center justify-center">
+        <div className="w-full overflow-hidden rounded-4xl border border-white/10 bg-slate-950/85">
+          <div className="grid min-h-[min(80vh,60rem)] grid-rows-[64px_1fr]">
+          <header 
+            className={`border-b p-4 transition-colors duration-150 ${
+              activeSection === "navbar" ? "bg-gray-800 text-white" : "bg-transparent text-white"
+            }`}
+          >
+            <div className="flex gap-4">
+              {navItems.map((item, index) => (
+                <button
+                  key={item}
+                  onClick={() => {
+                    setSelectedNavIndex(index);
+                    setActiveSection("navbar");
+                  }}  
+                  className={
+                    index === selectedNavIndex
+                      ? "rounded bg-gray-100 px-3 py-1 font-bold text-black"
+                      : "rounded px-3 py-1 hover:bg-gray-500"
+                  }
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </header>
 
-        <main className="grid grid-cols-2">
-          {currentNavItem === "Quests" ? (
-            <>
-              <aside 
-                className={`border-b p-4 transition-colors duration-150 ${
-                  activeSection === "questList" ? "bg-gray-800 text-white" : "bg-transparent text-white"
-              }`}
-              >
-                <h2 className="text-lg font-semibold">Quests</h2>
-                <div className="mt-4 flex flex-col gap-2">
-                    {quests.map((quest, index) => (
-                      <button
-                      type="button"
-                      role="option"
-                      key={quest.id}
-                      onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
-                      className={
-                        index === selectedIndex
-                          ? "text-left font-bold bg-gray-100 p-2 rounded text-black"
-                          : "text-left p-2 rounded hover:bg-gray-500"
-                      }
-                      >
-                        {quest.name ?? quest.description}
-                      </button>
-                    ))}
-                  </div>  
-              </aside>
-              <section 
-                className={`border-b p-4 transition-colors duration-150 ${
-                  activeSection === "questDetail" ? "bg-gray-800 text-white" : "bg-transparent text-white"
+          <main className="grid grid-cols-2">
+            {currentNavItem === "Quests" ? (
+              <>
+                <aside 
+                  className={`border-b p-4 transition-colors duration-150 ${
+                    activeSection === "questList" ? "bg-gray-800 text-white" : "bg-transparent text-white"
                 }`}
-              >
-                <h2 className="text-lg font-semibold">Details</h2>
-                <div className="mt-4">
-                  <h3 className="text-md font-medium">{selectedQuest?.name}</h3>
-                  <p className="mt-2 text-sm text-gray-700">{selectedQuest?.description}</p>
-                </div>
+                >
+                  <h2 className="text-lg font-semibold">Quests</h2>
+                  <div className="mt-4 flex flex-col gap-2">
+                      {quests.map((quest, index) => (
+                        <button
+                        type="button"
+                        role="option"
+                        key={quest.id}
+                        onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
+                        className={
+                          index === selectedIndex
+                            ? "text-left font-bold bg-gray-100 p-2 rounded text-black"
+                            : "text-left p-2 rounded hover:bg-gray-500"
+                        }
+                        >
+                          {quest.name ?? quest.description}
+                        </button>
+                      ))}
+                    </div>  
+                </aside>
+                <section 
+                  className={`border-b p-4 transition-colors duration-150 ${
+                    activeSection === "questDetail" ? "bg-gray-800 text-white" : "bg-transparent text-white"
+                  }`}
+                >
+                  <h2 className="text-lg font-semibold">Details</h2>
+                  <div className="mt-4">
+                    <h3 className="text-md font-medium">{selectedQuest?.name}</h3>
+                    <p className="mt-2 text-sm text-gray-700">{selectedQuest?.description}</p>
+                  </div>
+                </section>
+              </>
+            ) : (
+              <>
+              <section className="col-span-2 p-6">
+                <h2 className="text-lg font-semibold">{currentNavItem}</h2>
+                <p className="mt-4 text-sm text-gray-700">
+                  Placeholder content...
+                </p>
               </section>
-            </>
-          ) : (
-            <>
-            <section className="col-span-2 p-6">
-              <h2 className="text-lg font-semibold">{currentNavItem}</h2>
-              <p className="mt-4 text-sm text-gray-700">
-                Placeholder content...
-              </p>
-            </section>
-            </>
-          )}
-          
-        </main>
+              </>
+            )}
+            
+          </main>
+          </div>
+        </div>  
       </div>
     </div>
   );
