@@ -156,17 +156,17 @@ export default function Page() {
       <div className="mx-auto flex items-center justify-center">
         <QuestWindowFrame>
             <div className="relative h-full w-full">
-              <div className="absolute left-[9%] top-[1%] h-[6.5%] w-[82%]">
+              <div className="absolute left-[9%] top-[1%] right-[9%] aspect-[983/40] [container-type:inline-size]">
                 <header 
-                  className={`h-full w-full p-1.25 transition-colors duration-150 ${
+                  className={`flex h-full w-full px-[1cqw] py-0 text-[clamp(7px,5cqw,1.75cqw)] transition-colors duration-150 ${
                     activeSection === "navbar" 
                     ? "bg-gray-800 text-white" 
                     : "bg-transparent text-white"
                   }`}
                 >
-                  <div className="overflow-hidden">
+                  <div className="w-full h-full overflow-hidden">
                     <div 
-                      className="flex flex-nowrap transition-transform duration-300 ease-out"
+                      className="flex h-full flex-nowrap transition-transform duration-300 ease-out py-[0.25cqh]"
                       style={{transform: `translateX(-${navOffset * (100/visibleCount)}%)`}}
                     >
                       {navItems.map((item, index) => (
@@ -176,7 +176,7 @@ export default function Page() {
                           setSelectedNavIndex(index);
                           setActiveSection("navbar");
                         }}  
-                        className={`shrink-0 basis-1/3 rounded px-3 py-1 ${
+                        className={`inline-flex h-full shrink-0 basis-1/3 items-center justify-center whitespace-nowrap rounded px-2 leading-none ${
                           index === selectedNavIndex
                             ? "rounded bg-gray-100 px-3 py-1 font-bold text-black"
                             : "rounded px-3 py-1 hover:bg-gray-500"
