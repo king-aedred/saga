@@ -145,7 +145,7 @@ export default function Page() {
       ref={containerRef}
       tabIndex ={0}
       onKeyDown={handleKeyDown}
-      className="min-h-screen bg-[#4cf100] outline-none"
+      className="min-h-screen bg-[#040c00] outline-none"
     >
       {/* <img 
         src="/main-quest-gone-in-the-quest-log-vanilla-se-pc-v0-guwvqystbdn81.webp"
@@ -191,19 +191,19 @@ export default function Page() {
                 </header>
               </div>
             
-            <div className="absolute inset-x-[3.5%] top-[12%] h-[85%]">
-              <main className="grid h-full pl-18 grid-cols-[22%_1fr] gap-x-22">
+            <div className="absolute inset-x-[3.5%] top-[12%] h-[85%] [container-type:inline-size]">
+              <main className="grid h-full pl-[5.25cqw] grid-cols-[22%_1fr] gap-x-[8cqw]">
                 {currentNavItem === "Quests" ? (
                   <>
                     <aside 
-                      className={`h-full p-4 transition-colors duration-150 ${
+                      className={`h-full overflow-hidden pt-[2cqw] transition-colors duration-150 ${
                         activeSection === "questList" 
                         ? "bg-gray-800 text-white" 
                         : "bg-transparent text-white"
                       }`}
                       >
-                      <h2 className="text-lg font-semibold">Quests</h2>
-                        <div className="mt-4 flex flex-col gap-2">
+                      {/* <h2 className="text-[clamp(7px,1.4cqw,18px)] font-semibold leading-none">Quests</h2> */}
+                        <div className="mt-[1cqw] flex flex-col gap-[0.8cqw]">
                             {quests.map((quest, index) => (
                               <button
                               type="button"
@@ -212,8 +212,8 @@ export default function Page() {
                               onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
                               className={
                                 index === selectedIndex
-                                  ? "text-left font-bold bg-gray-100 p-2 rounded text-black"
-                                  : "text-left p-2 rounded hover:bg-gray-500"
+                                  ? "inline-flex min-h-[clamp(28px,3.2cqw,44px)] items-center text-left font-bold bg-gray-100 px-[1xqw] text-[clamp(11px,1.2cqw,16px)] rounded leading-none text-black"
+                                  : "inline-flex min-h-[clamp(28px,3.2cqw,44px)] items-center text-left rounded px-[1xqw] text-[clamp(11px,1.2cqw,16px)] hover:bg-gray-500"
                               }
                               >
                                 {quest.name ?? quest.description}
@@ -222,24 +222,26 @@ export default function Page() {
                           </div>  
                     </aside>
                     <section 
-                      className={`h-full p-4 transition-colors duration-150 ${
+                      className={`h-full overflow-hidden transition-colors duration-150 opacity-95 ${
                         activeSection === "questDetail" 
                         ? "bg-gray-800 text-white" 
                         : "bg-transparent text-white"
                       }`}
                     >
-                      <h2 className="text-lg font-semibold">Details</h2>
-                      <div className="mt-4">
-                        <h3 className="text-md font-medium">{selectedQuest?.name}</h3>
-                        <p className="mt-2 text-sm text-gray-700">{selectedQuest?.description}</p>
+                      <div className="relative left-[32%] right-[32%] mt-[2.55%] h-[6%] w-[16.1vw] [container-type:size] grid place-items-center overflow-hidden">
+                        <h3 className="w-full px-[4%] text-center font-medium leading-none whitespace-nowrap text-[clamp(10px,70cqh,42px)]">{selectedQuest?.name}</h3>
+                      </div>
+                      <h2 className="text-[clamp(7px,1.4cqw,18px)] font-semibold leading-none">Details</h2>
+                      <div className="mt-[1cqw]">
+                        <p className="mt-[0.8cqw] text-[clamp(10px,1.05cqw,14px)] text-gray-700">{selectedQuest?.description}</p>
                       </div>
                     </section>
                   </>
                 ) : (
                   <>
-                  <section className="col-span-2 p-6">
-                    <h2 className="text-lg font-semibold">{currentNavItem}</h2>
-                    <p className="mt-4 text-sm text-gray-700">
+                  <section className="col-span-2 p-[2cqw]">
+                    <h2 className="text-[clamp(7px,1.4cqw,18px)] font-semibold">{currentNavItem}</h2>
+                    <p className="mt-[1cqw] text-[clamp(10px,1.05cqw,14px)] text-gray-700">
                       Placeholder content...
                     </p>
                   </section>

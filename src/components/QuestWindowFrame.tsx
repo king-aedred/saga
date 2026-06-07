@@ -11,7 +11,7 @@ export default function QuestWindowFrame({children}: QuestWindowFrameProps) {
         src="/skyrim_log_kontura.svg"
         alt=""
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0 w-full h-full object-contain"  
+        className="pointer-events-none absolute inset-0 z-0 w-full h-full object-contain opacity-50"  
       />
 
       <div className="absolute inset-0 z-10 h-full w-full">
