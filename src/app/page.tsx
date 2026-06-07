@@ -145,12 +145,18 @@ export default function Page() {
       ref={containerRef}
       tabIndex ={0}
       onKeyDown={handleKeyDown}
-      className="min-h-screen bg-[#07090d] px-6 py-8 outline-none sm:px-8 lg:px12"
+      className="min-h-screen bg-[#4cf100] outline-none"
     >
-      <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-screen-2xl items-center justify-center">
+      {/* <img 
+        src="/main-quest-gone-in-the-quest-log-vanilla-se-pc-v0-guwvqystbdn81.webp"
+        alt=""
+        aria-hidden="true"
+        className="fixed inset-0 w-full h-full"
+      ></img> */}
+      <div className="mx-auto flex items-center justify-center">
         <QuestWindowFrame>
             <div className="relative h-full w-full">
-              <div className="absolute left-[10%] top-[1%] h-[6.5%] w-[80%]">
+              <div className="absolute left-[9%] top-[1%] h-[6.5%] w-[82%]">
                 <header 
                   className={`h-full w-full p-1.25 transition-colors duration-150 ${
                     activeSection === "navbar" 
@@ -185,7 +191,7 @@ export default function Page() {
                 </header>
               </div>
             
-            <div className="absolute inset-x-[3%] top-[12%] h-[85%]">
+            <div className="absolute inset-x-[3.5%] top-[12%] h-[85%]">
               <main className="grid h-full pl-18 grid-cols-[22%_1fr] gap-x-22">
                 {currentNavItem === "Quests" ? (
                   <>
