@@ -185,38 +185,38 @@ export default function Page() {
                 </header>
               </div>
             
-            <div className="absolute left-[10%] top-[12%] h-[78%] w-[80%]">
-              <main className="grid h-full grid-cols-2">
+            <div className="absolute inset-x-[3%] top-[12%] h-[85%]">
+              <main className="grid h-full pl-18 grid-cols-[22%_1fr] gap-x-22">
                 {currentNavItem === "Quests" ? (
                   <>
                     <aside 
-                      className={`h-full border-b p-4 transition-colors duration-150 ${
+                      className={`h-full p-4 transition-colors duration-150 ${
                         activeSection === "questList" 
                         ? "bg-gray-800 text-white" 
                         : "bg-transparent text-white"
-                    }`}
-                    >
+                      }`}
+                      >
                       <h2 className="text-lg font-semibold">Quests</h2>
-                      <div className="mt-4 flex flex-col gap-2">
-                          {quests.map((quest, index) => (
-                            <button
-                            type="button"
-                            role="option"
-                            key={quest.id}
-                            onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
-                            className={
-                              index === selectedIndex
-                                ? "text-left font-bold bg-gray-100 p-2 rounded text-black"
-                                : "text-left p-2 rounded hover:bg-gray-500"
-                            }
-                            >
-                              {quest.name ?? quest.description}
-                            </button>
-                          ))}
-                        </div>  
+                        <div className="mt-4 flex flex-col gap-2">
+                            {quests.map((quest, index) => (
+                              <button
+                              type="button"
+                              role="option"
+                              key={quest.id}
+                              onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
+                              className={
+                                index === selectedIndex
+                                  ? "text-left font-bold bg-gray-100 p-2 rounded text-black"
+                                  : "text-left p-2 rounded hover:bg-gray-500"
+                              }
+                              >
+                                {quest.name ?? quest.description}
+                              </button>
+                            ))}
+                          </div>  
                     </aside>
                     <section 
-                      className={`h-full border-b p-4 transition-colors duration-150 ${
+                      className={`h-full p-4 transition-colors duration-150 ${
                         activeSection === "questDetail" 
                         ? "bg-gray-800 text-white" 
                         : "bg-transparent text-white"
