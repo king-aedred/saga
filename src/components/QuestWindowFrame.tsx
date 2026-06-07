@@ -14,9 +14,9 @@ export default function QuestWindowFrame({children}: QuestWindowFrameProps) {
         className="pointer-events-none absolute inset-o h-full w-full select-none object-contain"  
       />
 
-      <div className="relative z-10 h-full w-full p-10">
+      <div className="absolute inset-0 z-10 h-full w-full">
         {children}
-      </div>"
+      </div>
     </div>
   );
 }

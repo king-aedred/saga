@@ -15,7 +15,12 @@ export default function Page() {
   
   type Section = "navbar" | "questList" | "questDetail";
 
-  const navItems = ["Overview", "Quests", "Map"];
+  const navItems = ["Overview", "Quests", "Map", "Sign in"];
+
+  const [navOffset, setNavOffset] = useState(0);
+
+  const visibleCount = 3;
+  const itemWidth = 100/visibleCount;
 
   const [activeSection, setActiveSection] = useState<Section>("questList");
   const [selectedNavIndex, setSelectedNavIndex] = useState(0);
@@ -35,12 +40,28 @@ export default function Page() {
       case "navbar": {
         if (event.key === "ArrowRight") {
           event.preventDefault();
-          setSelectedNavIndex((current) => (current + 1) % navItems.length);
+
+          const rightEdge = navOffset + visibleCount -1;
+
+          if (selectedNavIndex < rightEdge) {
+            setSelectedNavIndex((current) => Math.min(current +1, navItems.length - 1));
+          } else if (navOffset < navItems.length - visibleCount) {
+            setNavOffset((current) => current +1);
+            setSelectedNavIndex((current) => (current + 1));
+          }
           return;
         }
         if (event.key === "ArrowLeft") {
           event.preventDefault();
-          setSelectedNavIndex((current) => (current - 1 + navItems.length) % navItems.length);
+
+          const leftEdge = navOffset;
+
+          if (selectedNavIndex > leftEdge) {
+            setSelectedNavIndex((current) => Math.max(current -1, 0));
+          } else if (navOffset > 0) {
+            setNavOffset((current) => current -1);
+            setSelectedNavIndex((current) => current -1);
+          }
           return;
         }
         if (event.key === "ArrowDown") {
@@ -128,83 +149,98 @@ export default function Page() {
     >
       <div className="mx-auto flex min-h-[calc(100vh-4rem)] w-full max-w-screen-2xl items-center justify-center">
         <QuestWindowFrame>
-            <div className="grid min-h-[min(80vh,60rem)] grid-rows-[64px_1fr]">
-            <header 
-              className={`border-b p-4 transition-colors duration-150 ${
-                activeSection === "navbar" ? "bg-gray-800 text-white" : "bg-transparent text-white"
-              }`}
-            >
-              <div className="flex gap-4">
-                {navItems.map((item, index) => (
-                  <button
-                    key={item}
-                    onClick={() => {
-                      setSelectedNavIndex(index);
-                      setActiveSection("navbar");
-                    }}  
-                    className={
-                      index === selectedNavIndex
-                        ? "rounded bg-gray-100 px-3 py-1 font-bold text-black"
-                        : "rounded px-3 py-1 hover:bg-gray-500"
-                    }
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </header>
-
-            <main className="grid grid-cols-2">
-              {currentNavItem === "Quests" ? (
-                <>
-                  <aside 
-                    className={`border-b p-4 transition-colors duration-150 ${
-                      activeSection === "questList" ? "bg-gray-800 text-white" : "bg-transparent text-white"
+            <div className="relative h-full w-full">
+              <div className="absolute left-[10%] top-[1%] h-[6.5%] w-[80%]">
+                <header 
+                  className={`h-full w-full p-1.25 transition-colors duration-150 ${
+                    activeSection === "navbar" 
+                    ? "bg-gray-800 text-white" 
+                    : "bg-transparent text-white"
                   }`}
-                  >
-                    <h2 className="text-lg font-semibold">Quests</h2>
-                    <div className="mt-4 flex flex-col gap-2">
-                        {quests.map((quest, index) => (
-                          <button
-                          type="button"
-                          role="option"
-                          key={quest.id}
-                          onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
-                          className={
-                            index === selectedIndex
-                              ? "text-left font-bold bg-gray-100 p-2 rounded text-black"
-                              : "text-left p-2 rounded hover:bg-gray-500"
-                          }
-                          >
-                            {quest.name ?? quest.description}
-                          </button>
-                        ))}
-                      </div>  
-                  </aside>
-                  <section 
-                    className={`border-b p-4 transition-colors duration-150 ${
-                      activeSection === "questDetail" ? "bg-gray-800 text-white" : "bg-transparent text-white"
-                    }`}
-                  >
-                    <h2 className="text-lg font-semibold">Details</h2>
-                    <div className="mt-4">
-                      <h3 className="text-md font-medium">{selectedQuest?.name}</h3>
-                      <p className="mt-2 text-sm text-gray-700">{selectedQuest?.description}</p>
+                >
+                  <div className="overflow-hidden">
+                    <div 
+                      className="flex flex-nowrap transition-transform duration-300 ease-out"
+                      style={{transform: `translateX(-${navOffset * (100/visibleCount)}%)`}}
+                    >
+                      {navItems.map((item, index) => (
+                      <button
+                        key={item}
+                        onClick={() => {
+                          setSelectedNavIndex(index);
+                          setActiveSection("navbar");
+                        }}  
+                        className={`shrink-0 basis-1/3 rounded px-3 py-1 ${
+                          index === selectedNavIndex
+                            ? "rounded bg-gray-100 px-3 py-1 font-bold text-black"
+                            : "rounded px-3 py-1 hover:bg-gray-500"
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    ))}
                     </div>
+                    
+                  </div>
+                </header>
+              </div>
+            
+            <div className="absolute left-[10%] top-[12%] h-[78%] w-[80%]">
+              <main className="grid h-full grid-cols-2">
+                {currentNavItem === "Quests" ? (
+                  <>
+                    <aside 
+                      className={`h-full border-b p-4 transition-colors duration-150 ${
+                        activeSection === "questList" 
+                        ? "bg-gray-800 text-white" 
+                        : "bg-transparent text-white"
+                    }`}
+                    >
+                      <h2 className="text-lg font-semibold">Quests</h2>
+                      <div className="mt-4 flex flex-col gap-2">
+                          {quests.map((quest, index) => (
+                            <button
+                            type="button"
+                            role="option"
+                            key={quest.id}
+                            onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
+                            className={
+                              index === selectedIndex
+                                ? "text-left font-bold bg-gray-100 p-2 rounded text-black"
+                                : "text-left p-2 rounded hover:bg-gray-500"
+                            }
+                            >
+                              {quest.name ?? quest.description}
+                            </button>
+                          ))}
+                        </div>  
+                    </aside>
+                    <section 
+                      className={`h-full border-b p-4 transition-colors duration-150 ${
+                        activeSection === "questDetail" 
+                        ? "bg-gray-800 text-white" 
+                        : "bg-transparent text-white"
+                      }`}
+                    >
+                      <h2 className="text-lg font-semibold">Details</h2>
+                      <div className="mt-4">
+                        <h3 className="text-md font-medium">{selectedQuest?.name}</h3>
+                        <p className="mt-2 text-sm text-gray-700">{selectedQuest?.description}</p>
+                      </div>
+                    </section>
+                  </>
+                ) : (
+                  <>
+                  <section className="col-span-2 p-6">
+                    <h2 className="text-lg font-semibold">{currentNavItem}</h2>
+                    <p className="mt-4 text-sm text-gray-700">
+                      Placeholder content...
+                    </p>
                   </section>
-                </>
-              ) : (
-                <>
-                <section className="col-span-2 p-6">
-                  <h2 className="text-lg font-semibold">{currentNavItem}</h2>
-                  <p className="mt-4 text-sm text-gray-700">
-                    Placeholder content...
-                  </p>
-                </section>
-                </>
-              )}
-              
-            </main>
+                  </>
+                )}
+              </main>
+            </div>
           </div>
         </QuestWindowFrame>  
       </div>
