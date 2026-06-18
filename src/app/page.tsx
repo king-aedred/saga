@@ -1,5 +1,7 @@
 "use client";
 
+
+
 import QuestWindowFrame from "@/components/QuestWindowFrame";
 
 import {useEffect, useRef, useState} from "react";
@@ -25,6 +27,9 @@ export default function Page() {
   const [activeSection, setActiveSection] = useState<Section>("questList");
   const [selectedNavIndex, setSelectedNavIndex] = useState(0);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [hoveredNavIndex, setHoveredNavIndex] = useState<number | null>(null);
+
+  const navIndicatorIndex = hoveredNavIndex ?? (activeSection === "navbar" ? selectedNavIndex : null);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -156,12 +161,10 @@ export default function Page() {
       <div className="mx-auto flex items-center justify-center">
         <QuestWindowFrame>
             <div className="relative h-full w-full">
-              <div className="absolute left-[9%] top-[1%] right-[9%] aspect-[983/40] [container-type:inline-size]">
+              <div className="absolute left-[9%] top-[0.60%] right-[9%] aspect-[983/40] [container-type:inline-size]">
                 <header 
-                  className={`flex h-full w-full px-[1cqw] py-0 text-[clamp(7px,5cqw,1.75cqw)] transition-colors duration-150 ${
-                    activeSection === "navbar" 
-                    ? "bg-gray-800 text-white" 
-                    : "bg-transparent text-white"
+                  className={`flex h-full w-full px-[1cqw] py-0 text-[clamp(3cqw,4.5cqw,1.75cqw)] transition-colors duration-150 ${
+                    activeSection === "navbar" && "bg-transparent text-white" 
                   }`}
                 >
                   <div className="w-full h-full overflow-hidden">
@@ -176,13 +179,26 @@ export default function Page() {
                           setSelectedNavIndex(index);
                           setActiveSection("navbar");
                         }}  
-                        className={`inline-flex h-full shrink-0 basis-1/3 items-center justify-center whitespace-nowrap rounded px-2 leading-none ${
-                          index === selectedNavIndex
-                            ? "rounded bg-gray-100 px-3 py-1 font-bold text-black"
-                            : "rounded px-3 py-1 hover:bg-gray-500"
-                        }`}
+                        className="relative inline-flex h-full shrink-0 basis-1/3 items-center justify-center whitespace-nowrap rounded px-2 leading-none [containter-type:inline-size]"
                       >
-                        {item}
+                        {index === selectedNavIndex && (
+                          <>
+                            <img
+                              src="/selection_button_left.svg"
+                              alt=""
+                              aria-hidden="true"
+                              className="pointer-events-none absolute left-[clamp(1cqw,5cqw,5cqw)] top-1/2 h-[clamp(1cqw,2cqw,4cqw)] w-[clamp(1cqw,2cqw,4cqw)] -translate-y-1/2"
+                            />
+                            <img
+                              src="/selection_button_right.svg"
+                              alt=""
+                              aria-hidden="true"
+                              className="pointer-events-none absolute right-[clamp(1cqw,5cqw,5cqw)] top-1/2 h-[clamp(1cqw,2cqw,4cqw)] w-[clamp(1cqw,2cqw,4cqw)] -translate-y-1/2"
+                            />
+                          </>
+                        )}
+
+                        <span className="inline-block px-8 translate-y-[0.09em]">{item}</span>
                       </button>
                     ))}
                     </div>
