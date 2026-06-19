@@ -17,12 +17,7 @@ export default function Page() {
   
   type Section = "navbar" | "questList" | "questDetail";
 
-  const navItems = ["Overview", "Quests", "Map", "Sign in"];
-
-  const [navOffset, setNavOffset] = useState(0);
-
-  const visibleCount = 3;
-  const itemWidth = 100/visibleCount;
+  const navItems = ["QUESTS", "GENERAL STATS", "SYSTEM"];
 
   const [activeSection, setActiveSection] = useState<Section>("questList");
   const [selectedNavIndex, setSelectedNavIndex] = useState(0);
@@ -30,6 +25,10 @@ export default function Page() {
   const [hoveredNavIndex, setHoveredNavIndex] = useState<number | null>(null);
 
   const navIndicatorIndex = hoveredNavIndex ?? (activeSection === "navbar" ? selectedNavIndex : null);
+
+  const[clickedNavIndex, setClickedNavIndex] = useState<number | null>(null);
+
+  const [navAnimationToken, setNavAnimationToken] = useState(0);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -42,50 +41,6 @@ export default function Page() {
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     switch(activeSection) {
-      case "navbar": {
-        if (event.key === "ArrowRight") {
-          event.preventDefault();
-
-          const rightEdge = navOffset + visibleCount -1;
-
-          if (selectedNavIndex < rightEdge) {
-            setSelectedNavIndex((current) => Math.min(current +1, navItems.length - 1));
-          } else if (navOffset < navItems.length - visibleCount) {
-            setNavOffset((current) => current +1);
-            setSelectedNavIndex((current) => (current + 1));
-          }
-          return;
-        }
-        if (event.key === "ArrowLeft") {
-          event.preventDefault();
-
-          const leftEdge = navOffset;
-
-          if (selectedNavIndex > leftEdge) {
-            setSelectedNavIndex((current) => Math.max(current -1, 0));
-          } else if (navOffset > 0) {
-            setNavOffset((current) => current -1);
-            setSelectedNavIndex((current) => current -1);
-          }
-          return;
-        }
-        if (event.key === "ArrowDown") {
-          event.preventDefault();
-          if (navItems[selectedNavIndex] === "Quests") {
-            setActiveSection("questList");
-          } else {
-            setActiveSection("questDetail");
-          }
-          return;
-        }
-        if (event.key === "Enter") {
-          event.preventDefault;
-          setActiveSection("questList");
-          return;
-        }
-        return;
-      }
-
       case "questList": {
         if (event.key === "ArrowDown") {
           event.preventDefault();
@@ -94,27 +49,18 @@ export default function Page() {
         }
         if (event.key === "ArrowUp") {
           event.preventDefault();
-          // go into nav if top element is most top quest
-          if (selectedIndex === 0) {
-            setActiveSection("navbar");
-          } else {
+          if (selectedIndex > 0) {
             setSelectedIndex((current) => current -1);
           }
           return;
         }
-        if (event.key === "ArrowRight") {
+        if (event.key === "ArrowRight" || event.key == "Enter") {
           event.preventDefault();
           setActiveSection("questDetail");
           return;
         }    
-        if (event.key === "Enter") {
-          event.preventDefault();
-          setActiveSection("questDetail");
-          return;
-        }
         if (event.key === "Escape") {
           event.preventDefault();
-          setActiveSection("navbar");
           return;
         }
         return;
@@ -128,7 +74,6 @@ export default function Page() {
         }
         if (event.key === "ArrowUp") {
           event.preventDefault();
-          setActiveSection("navbar");
           return;
         }
         if(event.key === "Escape") {
@@ -150,60 +95,52 @@ export default function Page() {
       ref={containerRef}
       tabIndex ={0}
       onKeyDown={handleKeyDown}
-      className="min-h-screen bg-[#040c00] outline-none"
+      className="relative min-h-screen bg-[#181414] outline-none overflow-hidden"
     >
-      {/* <img 
-        src="/main-quest-gone-in-the-quest-log-vanilla-se-pc-v0-guwvqystbdn81.webp"
+      <img 
+        src="/skyrim_test_bg.webp"
         alt=""
         aria-hidden="true"
-        className="fixed inset-0 w-full h-full"
-      ></img> */}
-      <div className="mx-auto flex items-center justify-center">
+        className="absolute inset-0 z-0 h-full w-full object-fill object-center opacity-0"
+      />
+      <div className="relative z-10 mx-auto flex items-center justify-center">
         <QuestWindowFrame>
             <div className="relative h-full w-full">
               <div className="absolute left-[9%] top-[0.60%] right-[9%] aspect-[983/40] [container-type:inline-size]">
-                <header 
-                  className={"flex h-full w-full px-[1cqw] py-0 text-[clamp(3cqw,4.5cqw,1.75cqw)] transition-colors duration-150"}
-                >
+                <header className={"flex h-full w-full px-[1cqw] py-0 text-[clamp(3cqw,4.5cqw,1.75cqw)] transition-colors duration-150"}>
                   <div className="w-full h-full overflow-hidden">
-                    <div 
-                      className="flex h-full flex-nowrap transition-transform duration-300 ease-out py-[0.25cqh]"
-                      style={{transform: `translateX(-${navOffset * (100/visibleCount)}%)`}}
-                    >
+                    <div className="flex h-full w-full flex-nowrap py-[0.25cqh]">
                       {navItems.map((item, index) => (
                       <button
                         key={item}
                         onClick={() => {
                           setSelectedNavIndex(index);
-                          setActiveSection("navbar");
+                          setNavAnimationToken((current) => current +1);
                         }}
-                        onMouseEnter={() => setHoveredNavIndex(index)}
-                        onMouseLeave={() => setHoveredNavIndex(null)}  
-                        className="relative inline-flex h-full shrink-0 basis-1/3 items-center justify-center whitespace-nowrap rounded px-2 leading-none [containter-type:inline-size]"
-                      >
-                        {navIndicatorIndex === index && (
-                          <span className="pointer-events-none absolute left-[9cqw] right-[9cqw] top-1/2 h-[3.5cqw] -translate-y-1/2 rounded-lg bg-slate-200/20 backdrop-blur-[2px] ring-1 ring-white/10" />
-                        )}
-
+                        className="relative inline-flex flex-1 items-center justify-center whitespace-nowrap px-2 leading-none"
+                        >
                         {index === selectedNavIndex && (
-                          <>
+                          <>                            
                             <img
-                            
+                              key={`left-${index}-${navAnimationToken}`}
                               src="/selection_button_left.svg"
                               alt=""
                               aria-hidden="true"
-                              className="pointer-events-none absolute left-[clamp(1cqw,5cqw,5cqw)] top-1/2 h-[clamp(1cqw,2cqw,4cqw)] w-[clamp(1cqw,2cqw,4cqw)] -translate-y-1/2"
+                              className="pointer-events-none absolute left-[clamp(1cqw,6cqw,10cqw)] top-1/2 h-[clamp(1.2rem,2.2cqw,1.8rem)] w-[clamp(1.2rem,2.2cqw,1.8rem)] -translate-y-1/2 animate-slide-in-left"                                 
                             />
                             <img
+                              key={`right-${index}-${navAnimationToken}`}
                               src="/selection_button_right.svg"
                               alt=""
                               aria-hidden="true"
-                              className="pointer-events-none absolute right-[clamp(1cqw,5cqw,5cqw)] top-1/2 h-[clamp(1cqw,2cqw,4cqw)] w-[clamp(1cqw,2cqw,4cqw)] -translate-y-1/2"
+                              className="pointer-events-none absolute right-[clamp(1cqw,6cqw,10cqw)] top-1/2 h-[clamp(1.2rem,2.2cqw,1.8rem)] w-[clamp(1.2rem,2.2cqw,1.8rem)] -translate-y-1/2 animate-slide-in-right"
                             />
                           </>
                         )}
 
-                        <span className="relative z-10 inline-block px-8 translate-y-[0.09em]">{item}</span>
+                        <span className="relative z-10 inline-block px-8   origin-center tracking-[0.04em] drop-shadow-[0_2px_2px_rgba(0,0,0,1)]">
+                          {item}
+                        </span>
                       </button>
                     ))}
                     </div>
