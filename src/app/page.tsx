@@ -163,9 +163,7 @@ export default function Page() {
             <div className="relative h-full w-full">
               <div className="absolute left-[9%] top-[0.60%] right-[9%] aspect-[983/40] [container-type:inline-size]">
                 <header 
-                  className={`flex h-full w-full px-[1cqw] py-0 text-[clamp(3cqw,4.5cqw,1.75cqw)] transition-colors duration-150 ${
-                    activeSection === "navbar" && "bg-transparent text-white" 
-                  }`}
+                  className={"flex h-full w-full px-[1cqw] py-0 text-[clamp(3cqw,4.5cqw,1.75cqw)] transition-colors duration-150"}
                 >
                   <div className="w-full h-full overflow-hidden">
                     <div 
@@ -178,12 +176,19 @@ export default function Page() {
                         onClick={() => {
                           setSelectedNavIndex(index);
                           setActiveSection("navbar");
-                        }}  
+                        }}
+                        onMouseEnter={() => setHoveredNavIndex(index)}
+                        onMouseLeave={() => setHoveredNavIndex(null)}  
                         className="relative inline-flex h-full shrink-0 basis-1/3 items-center justify-center whitespace-nowrap rounded px-2 leading-none [containter-type:inline-size]"
                       >
+                        {navIndicatorIndex === index && (
+                          <span className="pointer-events-none absolute left-[9cqw] right-[9cqw] top-1/2 h-[3.5cqw] -translate-y-1/2 rounded-lg bg-slate-200/20 backdrop-blur-[2px] ring-1 ring-white/10" />
+                        )}
+
                         {index === selectedNavIndex && (
                           <>
                             <img
+                            
                               src="/selection_button_left.svg"
                               alt=""
                               aria-hidden="true"
@@ -198,7 +203,7 @@ export default function Page() {
                           </>
                         )}
 
-                        <span className="inline-block px-8 translate-y-[0.09em]">{item}</span>
+                        <span className="relative z-10 inline-block px-8 translate-y-[0.09em]">{item}</span>
                       </button>
                     ))}
                     </div>
