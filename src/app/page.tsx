@@ -126,14 +126,14 @@ export default function Page() {
                               src="/selection_button_left.svg"
                               alt=""
                               aria-hidden="true"
-                              className="pointer-events-none absolute left-[clamp(1cqw,6cqw,10cqw)] top-1/2 h-[clamp(1.2rem,2.2cqw,1.8rem)] w-[clamp(1.2rem,2.2cqw,1.8rem)] -translate-y-1/2 animate-slide-in-left"                                 
+                              className="pointer-events-none absolute left-[clamp(1cqw,6cqw,6cqw)] top-1/2 h-[clamp(0.2rem,2cqw,3cqw)] w-[clamp(0.2,2cqw,3cqw)] -translate-y-1/2 animate-slide-in-left"                                 
                             />
                             <img
                               key={`right-${index}-${navAnimationToken}`}
                               src="/selection_button_right.svg"
                               alt=""
                               aria-hidden="true"
-                              className="pointer-events-none absolute right-[clamp(1cqw,6cqw,10cqw)] top-1/2 h-[clamp(1.2rem,2.2cqw,1.8rem)] w-[clamp(1.2rem,2.2cqw,1.8rem)] -translate-y-1/2 animate-slide-in-right"
+                              className="pointer-events-none absolute right-[clamp(1cqw,6cqw,6cqw)] top-1/2 h-[clamp(0.2rem,2cqw,3cqw)] w-[clamp(0.2,2cqw,3cqw)] -translate-y-1/2 animate-slide-in-right"
                             />
                           </>
                         )}
