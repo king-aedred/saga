@@ -8,19 +8,40 @@ import {useEffect, useRef, useState} from "react";
 
 
 
-const quests = [
-  { id: 1, name: "First Quest", description: "test1" },
-  { id: 2, name: "Second Quest", description: "test2" },
-  { id: 3, name: "Third Quest", description: "test3" },
-  { id: 4, name: "Fourth Quest", description: "test4" },
-  { id: 5, name: "Fifth Quest", description: "test5" },
-]
+// const quests = [
+//   { id: 1, name: "First Quest", description: "test1" },
+//   { id: 2, name: "Second Quest", description: "test2" },
+//   { id: 3, name: "Third Quest", description: "test3" },
+//   { id: 4, name: "Fourth Quest", description: "test4" },
+//   { id: 5, name: "Fifth Quest", description: "test5" },
+// ]
+
+type QuestRow =
+  | { type: "quest"; id: number; name: string; description: string; completed: boolean }
+  | { type: "divider" };
 
 export default function Page() {
   
   type Section = "navbar" | "questList" | "questDetail";
 
   const navItems = ["QUESTS", "GENERAL STATS", "SYSTEM"];
+  
+  
+  const activeQuests = [
+    { id: 1, name: "First Quest", description: "test1", completed: false },
+    { id: 1, name: "Second Quest", description: "test2", completed: false },
+  ];
+  
+  const completedQuests = [
+    { id: 1, name: "Third Quest", description: "test3", completed: true },
+    { id: 1, name: "Fourth Quest", description: "test4", completed: true },
+  ];
+
+  const questRows: QuestRow[] = [
+    ...activeQuests.map((quest) => ({type: "quest" as const, ...quest })),
+    { type: "divider" },
+    ...completedQuests.map((quest) => ({ type: "quest" as const, ...quest })),
+  ];
 
   const [activeSection, setActiveSection] = useState<Section>("questList");
   const [selectedNavIndex, setSelectedNavIndex] = useState(0);
@@ -39,22 +60,31 @@ export default function Page() {
     containerRef.current?.focus();
   }, []);
 
-  const selectedQuest = quests[selectedIndex];
+  const selectedQuest = questRows[selectedIndex];
   const currentNavItem = navItems[selectedNavIndex];
+
+  function getNextSelectableIndex(startIndex: number, direction: 1 | -1) {
+    let nextIndex = startIndex + direction;
+
+    while (nextIndex >= 0 && nextIndex < questRows.length) {
+      if (questRows[nextIndex].type === "quest") return nextIndex;
+      nextIndex += direction;
+    }
+
+    return startIndex;
+  }
 
   function handleKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
     switch(activeSection) {
       case "questList": {
         if (event.key === "ArrowDown") {
           event.preventDefault();
-          setSelectedIndex((current) => Math.min(current + 1, quests.length -1 ));
+          setSelectedIndex((current) => getNextSelectableIndex(current, 1));
           return;
         }
         if (event.key === "ArrowUp") {
           event.preventDefault();
-          if (selectedIndex > 0) {
-            setSelectedIndex((current) => current -1);
-          }
+          setSelectedIndex((current) => getNextSelectableIndex(current, -1));
           return;
         }
         if (event.key === "ArrowRight" || event.key == "Enter") {
@@ -158,16 +188,27 @@ export default function Page() {
                   <>
                     <aside 
                       className="h-full overflow-hidden transition-colors duration-150">
-                      {/* <h2 className="text-[clamp(7px,1.4cqw,18px)] font-semibold leading-none">Quests</h2> */}
                         <div className="mt-[2cqw] flex flex-col">
-                            {quests.map((quest, index) => {
+                            {questRows.map((row, index) => {
+                              
+                              if (row.type === "divider") {
+                                return (
+                                  <div
+                                    key="divider"
+                                    role="seperator"
+                                    aria-hidden="true"
+                                    className="my-[1cqw] h-px w-full bg-white/20"
+                                  />
+                                );
+                              }
+                              
                               const isSelected = index === selectedIndex;
 
                               return (
                                 <button
                                 type="button"
                                 role="option"
-                                key={quest.id}
+                                key={row.id}
                                 onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
                                 className={[
                                   "w-full inline-flex min-h-[1cqw] items-center justify-end text-right focus:outline-none focus-visible:outline-none",
@@ -178,7 +219,7 @@ export default function Page() {
                                     : "text-gray-400 scale-100"
                                 ].join(" ")}
                                 >
-                                  {quest.name ?? quest.description}
+                                  {row.name}
                                 </button>
                               );
                             })}
