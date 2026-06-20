@@ -11,6 +11,9 @@ import {useEffect, useRef, useState} from "react";
 const quests = [
   { id: 1, name: "First Quest", description: "test1" },
   { id: 2, name: "Second Quest", description: "test2" },
+  { id: 3, name: "Third Quest", description: "test3" },
+  { id: 4, name: "Fourth Quest", description: "test4" },
+  { id: 5, name: "Fifth Quest", description: "test5" },
 ]
 
 export default function Page() {
@@ -154,29 +157,31 @@ export default function Page() {
                 {currentNavItem === "QUESTS" ? (
                   <>
                     <aside 
-                      className={`h-full overflow-hidden pt-[2cqw] transition-colors duration-150 ${
-                        activeSection === "questList" 
-                        ? "bg-gray-800 text-white" 
-                        : "bg-transparent text-white"
-                      }`}
-                      >
+                      className="h-full overflow-hidden transition-colors duration-150">
                       {/* <h2 className="text-[clamp(7px,1.4cqw,18px)] font-semibold leading-none">Quests</h2> */}
-                        <div className="mt-[1cqw] flex flex-col gap-[0.8cqw]">
-                            {quests.map((quest, index) => (
-                              <button
-                              type="button"
-                              role="option"
-                              key={quest.id}
-                              onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
-                              className={
-                                index === selectedIndex
-                                  ? "inline-flex min-h-[clamp(28px,3.2cqw,44px)] items-center text-left font-bold bg-gray-100 px-[1xqw] text-[clamp(11px,1.2cqw,16px)] rounded leading-none text-black"
-                                  : "inline-flex min-h-[clamp(28px,3.2cqw,44px)] items-center text-left rounded px-[1xqw] text-[clamp(11px,1.2cqw,16px)] hover:bg-gray-500"
-                              }
-                              >
-                                {quest.name ?? quest.description}
-                              </button>
-                            ))}
+                        <div className="mt-[2cqw] flex flex-col">
+                            {quests.map((quest, index) => {
+                              const isSelected = index === selectedIndex;
+
+                              return (
+                                <button
+                                type="button"
+                                role="option"
+                                key={quest.id}
+                                onClick={() => {setSelectedIndex(index); setActiveSection("questList");}}
+                                className={[
+                                  "w-full inline-flex min-h-[1cqw] items-center justify-end text-right focus:outline-none focus-visible:outline-none",
+                                  "px-[0.5cqw] origin-right transition-all duration-150 ease-out",
+                                  "text-2xl",
+                                  isSelected
+                                    ? "text-white scale-[1.1]"
+                                    : "text-gray-400 scale-100"
+                                ].join(" ")}
+                                >
+                                  {quest.name ?? quest.description}
+                                </button>
+                              );
+                            })}
                           </div>  
                     </aside>
                     <section 
