@@ -117,7 +117,7 @@ export default function Page() {
                           setSelectedNavIndex(index);
                           setNavAnimationToken((current) => current +1);
                         }}
-                        className="relative inline-flex flex-1 items-center justify-center whitespace-nowrap px-2 leading-none"
+                        className="relative inline-flex flex-1 items-center justify-center whitespace-nowrap px-2 leading-none focus:outline-none focus-visible:outline-none"
                         >
                         {index === selectedNavIndex && (
                           <>                            
@@ -151,7 +151,7 @@ export default function Page() {
             
             <div className="absolute inset-x-[3.5%] top-[12%] h-[85%] [container-type:inline-size]">
               <main className="grid h-full pl-[5.25cqw] grid-cols-[22%_1fr] gap-x-[8cqw]">
-                {currentNavItem === "Quests" ? (
+                {currentNavItem === "QUESTS" ? (
                   <>
                     <aside 
                       className={`h-full overflow-hidden pt-[2cqw] transition-colors duration-150 ${
